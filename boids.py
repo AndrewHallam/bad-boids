@@ -20,8 +20,11 @@ boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 def fly_towards_middle(velocity, position, boid1, boid2, weighting_factor, boidnumber):
    velocity[boid1] += (position[boid2]-position[boid1])*weighting_factor/boidnumber
    
+def distance(x_position, y_position,  boid1, boid2):
+   return (x_position[boid2]-x_position[boid1])**2 + (y_position[boid2]-y_position[boid1])**2
+
 def fly_away_from_nearby(x_position, y_position, x_velocity, y_velocity, boid1, boid2, nearby_factor):
-   if (x_position[boid2]-x_position[boid1])**2 + (y_position[boid2]-y_position[boid1])**2 < nearby_factor:
+   if distance(x_position, y_position,  boid1, boid2) < nearby_factor:
 				x_velocity[boid1]=x_velocity[boid1]+(x_position[boid1]-x_position[boid2])
 				y_velocity[boid1]=y_velocity[boid1]+(y_position[boid1]-y_position[boid2])
 
