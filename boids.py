@@ -19,6 +19,11 @@ boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
 def fly_towards_middle(velocity, position, boid1, boid2, weighting_factor, boidnumber):
    velocity[boid1] += (position[boid2]-position[boid1])*weighting_factor/boidnumber
+   
+def fly_away_from_nearby(x_position, y_position, x_velocity, y_velocity, boid1, boid2, nearby_factor):
+   if (x_position[boid2]-x_position[boid1])**2 + (y_position[boid2]-y_position[boid1])**2 < nearby_factor:
+				x_velocity[boid1]=x_velocity[boid1]+(x_position[boid1]-x_position[boid2])
+				y_velocity[boid1]=y_velocity[boid1]+(y_position[boid1]-y_position[boid2])
 
 def update_boids(boids):
 	x_pos,y_pos,x_vel,y_vel=boids
@@ -30,11 +35,9 @@ def update_boids(boids):
 		for j in range(c['boid_number']):
 			fly_towards_middle(y_vel, y_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
 	# Fly away from nearby boids
-	for i in range(len(x_pos)):
-		for j in range(len(x_pos)):
-			if (x_pos[j]-x_pos[i])**2 + (y_pos[j]-y_pos[i])**2 < c['Close_range']:
-				x_vel[i]=x_vel[i]+(x_pos[i]-x_pos[j])
-				y_vel[i]=y_vel[i]+(y_pos[i]-y_pos[j])
+	for i in range(c['boid_number']):
+		for j in range(c['boid_number']):
+			fly_away_from_nearby(x_pos, y_pos, x_vel, y_vel, i, j,  c['Close_range'])
 	# Try to match speed with nearby boids
 	for i in range(len(x_pos)):
 		for j in range(len(x_pos)):
