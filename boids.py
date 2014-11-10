@@ -17,15 +17,18 @@ boid_x_velocities=[random.uniform(c['x_vel_min'],c['x_vel_max']) for x in range(
 boid_y_velocities=[random.uniform(c['y_vel_min'],c['y_vel_max']) for x in range(c['boid_number'])]
 boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
+def fly_towards_middle(velocity, position, boid1, boid2, weighting_factor, boidnumber):
+   velocity[boid1] += (position[boid2]-position[boid1])*weighting_factor/boidnumber
+
 def update_boids(boids):
 	x_pos,y_pos,x_vel,y_vel=boids
 	# Fly towards the middle
-	for i in range(len(x_pos)):
-		for j in range(len(x_pos)):
-			x_vel[i]=x_vel[i]+(x_pos[j]-x_pos[i])*c['Flying_inwards_factor']/len(x_pos)
-	for i in range(len(x_pos)):
-		for j in range(len(x_pos)):
-			y_vel[i]=y_vel[i]+(y_pos[j]-y_pos[i])*c['Flying_inwards_factor']/len(x_pos)
+	for i in range(c['boid_number']):
+		for j in range(c['boid_number']):
+			fly_towards_middle(x_vel, x_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
+	for i in range(c['boid_number']):
+		for j in range(c['boid_number']):
+			fly_towards_middle(y_vel, y_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
 	# Fly away from nearby boids
 	for i in range(len(x_pos)):
 		for j in range(len(x_pos)):
