@@ -2,26 +2,19 @@
 A deliberately bad implementation of [Boids](http://dl.acm.org/citation.cfm?doid=37401.37406)
 for use as an exercise on refactoring.
 """
-
+from os.path import join, dirname
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import random
-
+from yaml import load
 # Deliberately terrible code for teaching purposes
 
-boid_number=50
-x_pos_range=(-450,50.0)
-y_pos_range=(300.0,600.0)
-x_vel_range=(0,10.0)
-y_vel_range=(-20.0,20.0) 
+c = load(open(join(dirname(__file__), 'config.yml')))
 
-xlim=(-500,1500)
-ylim=(-500,1500)
-
-boids_x=[random.uniform(*x_pos_range) for x in range(boid_number)]
-boids_y=[random.uniform(*y_pos_range) for x in range(boid_number)]
-boid_x_velocities=[random.uniform(*x_vel_range) for x in range(boid_number)]
-boid_y_velocities=[random.uniform(*y_vel_range) for x in range(boid_number)]
+boids_x=[random.uniform(c['x_pos_min'],c['x_pos_max']) for x in range(c['boid_number'])]
+boids_y=[random.uniform(c['y_pos_min'],c['y_pos_max']) for x in range(c['boid_number'])]
+boid_x_velocities=[random.uniform(c['x_vel_min'],c['x_vel_max']) for x in range(c['boid_number'])]
+boid_y_velocities=[random.uniform(c['y_vel_min'],c['y_vel_max']) for x in range(c['boid_number'])]
 boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
 def update_boids(boids):
@@ -29,22 +22,22 @@ def update_boids(boids):
 	# Fly towards the middle
 	for i in range(len(x_pos)):
 		for j in range(len(x_pos)):
-			x_vel[i]=x_vel[i]+(x_pos[j]-x_pos[i])*0.01/len(x_pos)
+			x_vel[i]=x_vel[i]+(x_pos[j]-x_pos[i])*c['Flying_inwards_factor']/len(x_pos)
 	for i in range(len(x_pos)):
 		for j in range(len(x_pos)):
-			y_vel[i]=y_vel[i]+(y_pos[j]-y_pos[i])*0.01/len(x_pos)
+			y_vel[i]=y_vel[i]+(y_pos[j]-y_pos[i])*c['Flying_inwards_factor']/len(x_pos)
 	# Fly away from nearby boids
 	for i in range(len(x_pos)):
 		for j in range(len(x_pos)):
-			if (x_pos[j]-x_pos[i])**2 + (y_pos[j]-y_pos[i])**2 < 100:
+			if (x_pos[j]-x_pos[i])**2 + (y_pos[j]-y_pos[i])**2 < c['Close_range']:
 				x_vel[i]=x_vel[i]+(x_pos[i]-x_pos[j])
 				y_vel[i]=y_vel[i]+(y_pos[i]-y_pos[j])
 	# Try to match speed with nearby boids
 	for i in range(len(x_pos)):
 		for j in range(len(x_pos)):
-			if (x_pos[j]-x_pos[i])**2 + (y_pos[j]-y_pos[i])**2 < 10000:
-				x_vel[i]=x_vel[i]+(x_vel[j]-x_vel[i])*0.125/len(x_pos)
-				y_vel[i]=y_vel[i]+(y_vel[j]-y_vel[i])*0.125/len(x_pos)
+			if (x_pos[j]-x_pos[i])**2 + (y_pos[j]-y_pos[i])**2 < c['Long_range']:
+				x_vel[i]=x_vel[i]+(x_vel[j]-x_vel[i])*c['Match_speed_factor']/len(x_pos)
+				y_vel[i]=y_vel[i]+(y_vel[j]-y_vel[i])*c['Match_speed_factor']/len(x_pos)
 	# Move according to velocities
 	for i in range(len(x_pos)):
 		x_pos[i]=x_pos[i]+x_vel[i]
@@ -52,7 +45,7 @@ def update_boids(boids):
 
 
 figure=plt.figure()
-axes=plt.axes(xlim=xlim, ylim=ylim)
+axes=plt.axes(xlim=(c['xlim_min'],c['xlim_max']), ylim=(c['ylim_min'],c['xlim_max']))
 scatter=axes.scatter(boids[0],boids[1])
 
 def animate(frame):
@@ -61,7 +54,7 @@ def animate(frame):
 
 
 anim = animation.FuncAnimation(figure, animate,
-                               frames=50, interval=50)
+                               frames=c['frames'], interval=c['frames'])
 
 if __name__ == "__main__":
     plt.show()

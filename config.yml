@@ -1,4 +1,4 @@
-boid_number: 100
+boid_number: 10
 x_pos_min: -450
 x_pos_max: 50
 y_pos_min: 300.0
@@ -7,6 +7,11 @@ x_vel_min: 0.0
 x_vel_max: 20.0
 y_vel_min: -20.0
 y_vel_max: 20.0
+
+Flying_inwards_factor: 0.01
+Close_range: 100
+Long_range: 10000
+Match_speed_factor: 0.125
 
 xlim_min: -500
 xlim_max: 1500
