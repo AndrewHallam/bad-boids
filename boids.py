@@ -17,27 +17,31 @@ boid_x_velocities=[random.uniform(c['x_vel_min'],c['x_vel_max']) for x in range(
 boid_y_velocities=[random.uniform(c['y_vel_min'],c['y_vel_max']) for x in range(c['boid_number'])]
 boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
-def fly_towards_middle(velocity, position, boid1, boid2, weighting_factor, boidnumber):
-   velocity[boid1] += (position[boid2]-position[boid1])*weighting_factor/boidnumber
-   
-def distance(x_position, y_position,  boid1, boid2):
-   return (x_position[boid2]-x_position[boid1])**2 + (y_position[boid2]-y_position[boid1])**2
+def fly_towards_middle(vel, pos, boid1, boid2, weighting_factor, boidnumber):
+   vel[boid1] += (pos[boid2]-pos[boid1])*weighting_factor/boidnumber
 
-def fly_away_from_nearby(x_position, y_position, x_velocity, y_velocity, boid1, boid2, nearby_factor):
-   if distance(x_position, y_position,  boid1, boid2) < nearby_factor:
-				x_velocity[boid1]=x_velocity[boid1]+(x_position[boid1]-x_position[boid2])
-				y_velocity[boid1]=y_velocity[boid1]+(y_position[boid1]-y_position[boid2])
 
-def match_speed(x_position, y_position, x_velocity, y_velocity, boid1, boid2, far_factor, speed_factor, boidnumber):
-   if distance(x_position, y_position,  boid1, boid2) < far_factor:
-	x_velocity[boid1]=x_velocity[boid1]+(x_velocity[boid2]-x_velocity[boid1])*speed_factor/boidnumber
-        y_velocity[boid1]=y_velocity[boid1]+(y_velocity[boid2]-y_velocity[boid1])*speed_factor/boidnumber
+def distance(x_pos, y_pos,  boid1, boid2):
+   return (x_pos[boid2]-x_pos[boid1])**2 + (y_pos[boid2]-y_pos[boid1])**2
+
+
+def fly_away_from_nearby(x_pos, y_pos, x_vel, y_vel, boid1, boid2, nearby_factor):
+   if distance(x_pos, y_pos,  boid1, boid2) < nearby_factor:
+				x_vel[boid1]=x_vel[boid1]+(x_pos[boid1]-x_pos[boid2])
+				y_vel[boid1]=y_vel[boid1]+(y_pos[boid1]-y_pos[boid2])
+
+
+def match_speed(x_pos, y_pos, x_vel, y_vel, boid1, boid2, far_factor, speed_factor, boidnumber):
+   if distance(x_pos, y_pos,  boid1, boid2) < far_factor:
+	x_vel[boid1]=x_vel[boid1]+(x_vel[boid2]-x_vel[boid1])*speed_factor/boidnumber
+        y_vel[boid1]=y_vel[boid1]+(y_vel[boid2]-y_vel[boid1])*speed_factor/boidnumber
         
 def update_boids(boids):
 	x_pos,y_pos,x_vel,y_vel=boids
 	
 	for i in range(c['boid_number']):
 	   for j in range(c['boid_number']):
+	       
 	# Fly towards the middle
 	      fly_towards_middle(x_vel, x_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
 	      fly_towards_middle(y_vel, y_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
