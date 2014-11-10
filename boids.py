@@ -32,32 +32,25 @@ def match_speed(x_position, y_position, x_velocity, y_velocity, boid1, boid2, fa
    if distance(x_position, y_position,  boid1, boid2) < far_factor:
 	x_velocity[boid1]=x_velocity[boid1]+(x_velocity[boid2]-x_velocity[boid1])*speed_factor/boidnumber
         y_velocity[boid1]=y_velocity[boid1]+(y_velocity[boid2]-y_velocity[boid1])*speed_factor/boidnumber
-
+        
 def update_boids(boids):
 	x_pos,y_pos,x_vel,y_vel=boids
+	
+	for i in range(c['boid_number']):
+	   for j in range(c['boid_number']):
 	# Fly towards the middle
-	for i in range(c['boid_number']):
-	   for j in range(c['boid_number']):
 	      fly_towards_middle(x_vel, x_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
-	      
-	for i in range(c['boid_number']):
-	   for j in range(c['boid_number']):
 	      fly_towards_middle(y_vel, y_pos, i, j, c['Flying_inwards_factor'], c['boid_number'])
 	      
 	# Fly away from nearby boids
-	for i in range(c['boid_number']):
-	   for j in range(c['boid_number']):
 	      fly_away_from_nearby(x_pos, y_pos, x_vel, y_vel, i, j,  c['Close_range'])
 	      
 	# Try to match speed with nearby boids
-	for i in range(c['boid_number']):
-	   for j in range(c['boid_number']):
 	      match_speed(x_pos, y_pos, x_vel, y_vel, i, j, c['Long_range'], c['Match_speed_factor'], c['boid_number'])
 	      
 	# Move according to velocities
-	for i in range(len(x_pos)):
-	   x_pos[i]=x_pos[i]+x_vel[i]
-	   y_pos[i]=y_pos[i]+y_vel[i]
+	   x_pos[i] += x_vel[i]
+	   y_pos[i] += y_vel[i]
 
 
 figure=plt.figure()
