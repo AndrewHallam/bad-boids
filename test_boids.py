@@ -43,12 +43,13 @@ def  test_distance():
     
 def test_fly_away_from_nearby():
     regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'sample_fly_away_from_nearby.yml')))
-    data=regression_data["boids"]
+    data=regression_data["before"]
     boids_before=[boid(data[0][i],data[1][i],data[2][i],data[3][i]) for i in range(2)]
     boids_before[0].fly_away_from_nearby(boids_before[1])
 
-    boids_after=[boid(1,1,1,1), boid(0,0,0,0)]
-    
+    data_after=regression_data["after"]
+    boids_after=[boid(data_after[0][i],data_after[1][i],data_after[2][i],data_after[3][i]) for i in range(2)]
+       
     for after, before in zip(boids_after,boids_before):
         assert_almost_equal(after.x_position,before.x_position,delta=0.01)
         assert_almost_equal(after.y_position,before.y_position,delta=0.01)
