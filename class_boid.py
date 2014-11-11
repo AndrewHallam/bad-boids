@@ -5,9 +5,9 @@ class boid(object):
        self.x_velocity=x_velocity
        self.y_velocity=y_velocity
 
-   def fly_towards_middle(self, other_boid, weight):
-      self.x_velocity += (other_boid.x_position-self.x_position)*weight
-      self.y_velocity += (other_boid.y_position-self.y_position)*weight
+   def fly_towards_middle(self, other_boid, weight, boid_number):
+      self.x_velocity += (other_boid.x_position-self.x_position)*weight/boid_number
+      self.y_velocity += (other_boid.y_position-self.y_position)*weight/boid_number
      
    def distance(self, other_boid):
       return (other_boid.x_position-self.x_position)**2+(other_boid.y_position-self.y_position)**2
@@ -16,6 +16,6 @@ class boid(object):
          self.x_velocity += self.x_position - other_boid.x_position
          self.y_velocity += self.y_position - other_boid.y_position
 
-   def match_speed(self, other_boid, weight):
-        self.x_velocity += (self.x_velocity - other_boid.x_velocity)*weight
-        self.y_velocity += (self.y_velocity - other_boid.y_velocity)*weight
+   def match_speed(self, other_boid, weight, boid_number):
+        self.x_velocity += (self.x_velocity - other_boid.x_velocity)*weight/boid_number
+        self.y_velocity += (self.y_velocity - other_boid.y_velocity)*weight/boid_number
