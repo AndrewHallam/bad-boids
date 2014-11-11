@@ -11,7 +11,11 @@ class boid(object):
      
    def distance(self, other_boid):
       return (other_boid.x_position-self.x_position)**2+(other_boid.y_position-self.y_position)**2
-     
+      
+   def fly_away_from_nearby(self, other_boid, close_range):
+      if boid.distance(other_boid) < close_range:
+         self.x_velocity += self.x_position - other_boid.x_position
+         self.y_velocity += self.y_position - other_boid.y_position
 
 
 
