@@ -9,5 +9,9 @@ class boid(object):
       self.x_velocity += (other_boid.x_position-self.x_position)*weight
       self.y_velocity += (other_boid.y_position-self.y_position)*weight
      
+   def distance(self, other_boid):
+      return (other_boid.x_position-self.x_position)**2+(other_boid.y_position-self.y_position)**2
+     
+
 
 
