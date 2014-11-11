@@ -34,4 +34,10 @@ def test_fly_towards_middle():
         assert_almost_equal(after.x_velocity,before.x_velocity,delta=0.01)
         assert_almost_equal(after.y_velocity,before.y_velocity,delta=0.01)
 
-test_fly_towards_middle()
+def  test_distance():
+    regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'sample_distance.yml')))
+    data_before=regression_data["before"]
+    boids=[boid(data_before[0][i],data_before[1][i],data_before[2][i],data_before[3][i]) for i in range(2)]
+    print boids[0].distance(boids[1])
+    assert_almost_equal(boids[0].distance(boids[1]), 200., delta=0.01)
+
