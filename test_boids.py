@@ -21,12 +21,13 @@ def test_bad_boids_regression():
 
 def test_fly_towards_middle():
     regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'fly_towards_middle.yml')))
-    data_before=regression_data["boids"]
+    data_before=regression_data["before"]
     boids_before=[boid(data_before[0][i],data_before[1][i],data_before[2][i],data_before[3][i]) for i in range(2)]
 
     boids_before[0].fly_towards_middle(boids_before[1], 1., 2.)
 
-    boids_after=[boid(0, 0, 0.5, 0.5), boid(1, 1, 0, 0)]
+    data_after=regression_data["after"]
+    boids_after=[boid(data_after[0][i],data_after[1][i],data_after[2][i],data_after[3][i]) for i in range(2)]
     
     for after,before in zip(boids_after,boids_before):
         assert_almost_equal(after.x_position,before.x_position,delta=0.01)
