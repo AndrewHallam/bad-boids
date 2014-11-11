@@ -21,7 +21,7 @@ def test_bad_boids_regression():
 
 def test_fly_towards_middle():
     regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'fly_towards_middle.yml')))
-    data_before=regression_data["before"]
+    data_before=regression_data["boids"]
     boids_before=[boid(data_before[0][i],data_before[1][i],data_before[2][i],data_before[3][i]) for i in range(2)]
 
     boids_before[0].fly_towards_middle(boids_before[1], 1., 2.)
@@ -36,8 +36,23 @@ def test_fly_towards_middle():
 
 def  test_distance():
     regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'sample_distance.yml')))
-    data_before=regression_data["before"]
-    boids=[boid(data_before[0][i],data_before[1][i],data_before[2][i],data_before[3][i]) for i in range(2)]
-    print boids[0].distance(boids[1])
+    data=regression_data["boids"]
+    boids=[boid(data[0][i],data[1][i],data[2][i],data[3][i]) for i in range(2)]
     assert_almost_equal(boids[0].distance(boids[1]), 200., delta=0.01)
+    
+def test_fly_away_from_nearby():
+    regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'sample_fly_away_from_nearby.yml')))
+    data=regression_data["boids"]
+    boids_before=[boid(data[0][i],data[1][i],data[2][i],data[3][i]) for i in range(2)]
+    boids_before[0].fly_away_from_nearby(boids_before[1])
+
+    boids_after=[boid(1,1,1,1), boid(0,0,0,0)]
+    
+    for after, before in zip(boids_after,boids_before):
+        assert_almost_equal(after.x_position,before.x_position,delta=0.01)
+        assert_almost_equal(after.y_position,before.y_position,delta=0.01)
+        assert_almost_equal(after.x_velocity,before.x_velocity,delta=0.01)
+        assert_almost_equal(after.y_velocity,before.y_velocity,delta=0.01)
+
+
 
