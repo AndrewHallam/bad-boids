@@ -17,5 +17,7 @@ class boid(object):
          self.x_velocity += self.x_position - other_boid.x_position
          self.y_velocity += self.y_position - other_boid.y_position
 
-
-
+   def match_speed(self, other_boid, long_range, weight):
+       if boid.distance(other_boid) < long_range:
+        self.x_velocity += (self.x_velocity - other_boid.x_velocity)*weight
+        self.y_velocity += (self.y_velocity - other_boid.y_velocity)*weight
