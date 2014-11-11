@@ -10,7 +10,7 @@ class boid(object):
       self.y_velocity += (other_boid.y_position-self.y_position)*weight/boid_number
      
    def distance(self, other_boid):
-      return (other_boid.x_position-self.x_position)**2+(other_boid.y_position-self.y_position)**2
+      return (other_boid.x_position-self.x_position)**2 + (other_boid.y_position-self.y_position)**2
       
    def fly_away_from_nearby(self, other_boid):
          self.x_velocity += self.x_position - other_boid.x_position

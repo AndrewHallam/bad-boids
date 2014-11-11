@@ -14,5 +14,6 @@ def test_bad_boids_regression():
     boids_after=[boid(data_after[i]['x_position'],data_after[i]['y_position'],data_after[i]['x_velocity'],data_after[i]['y_velocity']) for i in range(50)]
 
     for after,before in zip(boids_after,boids_before):
-        assert_almost_equal(after.x_position,before.x_position,delta=100)
+        assert_almost_equal(after.x_position,before.x_position,delta=0.01)
 	
+test_bad_boids_regression()
