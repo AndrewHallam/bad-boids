@@ -16,14 +16,20 @@ from update_boids import update_boids
 config = load(open(join(dirname(__file__), 'config.yml')))
 
 
+def initial_boids():
+    
 # The initial boids are randomly generated here. boids_x generates the x positions of the starting boids for example.
 
-boids_x=[random.uniform(config['x_pos_min'],config['x_pos_max']) for x in range(config['boid_number'])]
-boids_y=[random.uniform(config['y_pos_min'],config['y_pos_max']) for x in range(config['boid_number'])]
-boid_x_velocities=[random.uniform(config['x_vel_min'],config['x_vel_max']) for x in range(config['boid_number'])]
-boid_y_velocities=[random.uniform(config['y_vel_min'],config['y_vel_max']) for x in range(config['boid_number'])]
+    boids_x=[random.uniform(config['x_pos_min'],config['x_pos_max']) for x in range(config['boid_number'])]
+    boids_y=[random.uniform(config['y_pos_min'],config['y_pos_max']) for x in range(config['boid_number'])]
+    boid_x_velocities=[random.uniform(config['x_vel_min'],config['x_vel_max']) for x in range(config['boid_number'])]
+    boid_y_velocities=[random.uniform(config['y_vel_min'],config['y_vel_max']) for x in range(config['boid_number'])]
 
-boids=[boid(boids_x[i],boids_y[i],boid_x_velocities[i], boid_y_velocities[i]) for i in range(config['boid_number'])]
+    boids=[boid(boids_x[i],boids_y[i],boid_x_velocities[i], boid_y_velocities[i]) for i in range(config['boid_number'])]
+    
+    return boids 
+    
+boids=initial_boids()    
 
 update_boids(boids)    
 
@@ -42,7 +48,7 @@ def animate(frame):
 
 
 anim = animation.FuncAnimation(figure, animate,
-                               frames=config['frames'], interval=config['frames'])
+                               frames=config['frames'], interval=config['interval'])
 
 if __name__ == "__main__":
     plt.show()
