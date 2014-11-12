@@ -1,6 +1,6 @@
 """
 An improved implementation of [Boids](http://dl.acm.org/citation.cfm?doid=37401.37406)
-doing using refactoring.
+using refactoring.
 """
 from os.path import join, dirname
 from matplotlib import pyplot as plt
@@ -9,7 +9,10 @@ import random
 from yaml import load
 from class_boid import boid 
 from update_boids import update_boids 
+
 # Hopefully the code's readability has been improved!
+# Note: This code would not work for me from command line, it would only work in Canopy
+# However, this was also the case with the initial code given. 
 
 config = load(open(join(dirname(__file__), 'config.yml')))
 

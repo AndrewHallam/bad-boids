@@ -1,3 +1,4 @@
+# Used to define the initial conditions of the system.
 boid_number: 50
 x_pos_min: -450
 x_pos_max: 50
@@ -8,11 +9,13 @@ x_vel_max: 10.0
 y_vel_min: -20.0
 y_vel_max: 20.0
 
+# Used to update the position and velocity of the boids.
 Flying_inwards_factor: 0.01
 Close_range: 100
 Long_range: 10000
 Match_speed_factor: 0.125
 
+# Used to plot the boids animation.
 xlim_min: -500
 xlim_max: 1500
 ylim_min: -500
