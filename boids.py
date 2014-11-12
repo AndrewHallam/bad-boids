@@ -10,7 +10,6 @@ from yaml import load
 from class_boid import boid 
 from update_boids import update_boids 
 
-# Hopefully the code's readability has been improved!
 # Note: This code would not work for me from command line, it would only work in Canopy
 # However, this was also the case with the initial code given. 
 
