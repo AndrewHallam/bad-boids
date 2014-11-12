@@ -1,8 +1,29 @@
 from update_boids import update_boids
-from nose.tools import assert_almost_equal
+from os.path import join, dirname
+from yaml import load
+from nose.tools import assert_almost_equal, assert_true
 import os
 import yaml
 from class_boid import boid 
+from boids import initial_boids
+
+config = load(open(join(dirname(__file__), 'config.yml')))
+
+
+def test_initial_boids():
+# Tests that the initial_boid() creates boids between the parameters given.    
+    test_boids=initial_boids()
+    
+    for boid in test_boids:
+        assert_true(boid.x_position < config['x_pos_max'])
+        assert_true(boid.x_position > config['x_pos_min'])
+        assert_true(boid.y_position < config['y_pos_max'])
+        assert_true(boid.y_position > config['y_pos_min'])
+        assert_true(boid.x_velocity < config['x_vel_max'])
+        assert_true(boid.x_velocity > config['x_vel_min'])
+        assert_true(boid.y_velocity < config['y_vel_max'])
+        assert_true(boid.y_velocity > config['y_vel_min'])
+
 
 def test_bad_boids_regression():
 # This tests that the upgrade_boids() function is properly updating the positions and momentums
