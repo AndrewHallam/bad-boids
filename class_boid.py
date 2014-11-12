@@ -1,3 +1,5 @@
+# This defines each of the "boid"s flying around in the animation.
+
 class boid(object):
    def __init__(self, x_position, y_position, x_velocity, y_velocity):
        self.x_position=x_position
@@ -9,6 +11,7 @@ class boid(object):
       self.x_velocity += (other_boid.x_position-self.x_position)*weight/boid_number
       self.y_velocity += (other_boid.y_position-self.y_position)*weight/boid_number
      
+   # Distance actually finds the distance squared, although this is not an issue for it's use in this code.   
    def distance(self, other_boid):
       return (other_boid.x_position-self.x_position)**2 + (other_boid.y_position-self.y_position)**2
       

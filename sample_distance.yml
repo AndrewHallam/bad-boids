@@ -1,4 +1,6 @@
-before:
+# This data was put in the same format as fixture.yml for the sake of consistency.
+
+boids:
 - [0, 10]
 - [0, 10]
 - [0, 0]

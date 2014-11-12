@@ -1,6 +1,6 @@
 """
-A deliberately bad implementation of [Boids](http://dl.acm.org/citation.cfm?doid=37401.37406)
-for use as an exercise on refactoring.
+An improved implementation of [Boids](http://dl.acm.org/citation.cfm?doid=37401.37406)
+doing using refactoring.
 """
 from os.path import join, dirname
 from matplotlib import pyplot as plt
@@ -9,16 +9,19 @@ import random
 from yaml import load
 from class_boid import boid 
 from update_boids import update_boids 
-# Deliberately terrible code for teaching purposes
+# Hopefully the code's readability has been improved!
 
-c = load(open(join(dirname(__file__), 'config.yml')))
+config = load(open(join(dirname(__file__), 'config.yml')))
 
-boids_x=[random.uniform(c['x_pos_min'],c['x_pos_max']) for x in range(c['boid_number'])]
-boids_y=[random.uniform(c['y_pos_min'],c['y_pos_max']) for x in range(c['boid_number'])]
-boid_x_velocities=[random.uniform(c['x_vel_min'],c['x_vel_max']) for x in range(c['boid_number'])]
-boid_y_velocities=[random.uniform(c['y_vel_min'],c['y_vel_max']) for x in range(c['boid_number'])]
 
-boids=[boid(boids_x[i],boids_y[i],boid_x_velocities[i], boid_y_velocities[i]) for i in range(c['boid_number'])]
+# The initial boids are randomly generated here. boids_x generates the x positions of the starting boids for example.
+
+boids_x=[random.uniform(config['x_pos_min'],config['x_pos_max']) for x in range(config['boid_number'])]
+boids_y=[random.uniform(config['y_pos_min'],config['y_pos_max']) for x in range(config['boid_number'])]
+boid_x_velocities=[random.uniform(config['x_vel_min'],config['x_vel_max']) for x in range(config['boid_number'])]
+boid_y_velocities=[random.uniform(config['y_vel_min'],config['y_vel_max']) for x in range(config['boid_number'])]
+
+boids=[boid(boids_x[i],boids_y[i],boid_x_velocities[i], boid_y_velocities[i]) for i in range(config['boid_number'])]
 
 update_boids(boids)    
 
@@ -26,7 +29,7 @@ x_plot = [boids[i].x_position for i in range(len(boids))]
 y_plot = [boids[i].y_position for i in range(len(boids))]
 
 figure=plt.figure()
-axes=plt.axes(xlim=(c['xlim_min'],c['xlim_max']), ylim=(c['ylim_min'],c['xlim_max']))
+axes=plt.axes(xlim=(config['xlim_min'],config['xlim_max']), ylim=(config['ylim_min'],config['xlim_max']))
 scatter=axes.scatter(x_plot,y_plot)
 
 def animate(frame):
@@ -37,7 +40,7 @@ def animate(frame):
 
 
 anim = animation.FuncAnimation(figure, animate,
-                               frames=c['frames'], interval=c['frames'])
+                               frames=config['frames'], interval=config['frames'])
 
 if __name__ == "__main__":
     plt.show()
