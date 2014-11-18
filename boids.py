@@ -13,29 +13,36 @@ class Boid(object):
         self.position=array([x,y])
         self.velocity=array([xv,yv])
         self.owner=owner
+    def separation(self, other):
+        separation=other.position-self.position   
+        return separation
 
-    
+    def separation_sq(self, other):
+        separation_sq=self.separation(other).dot(self.separation(other))
+        return separation_sq
+    def interaction(self, other):
+        pass
+        
 class Eagle(Boid):
     def __init__(self,x,y,xv,yv,owner):
         super(Eagle, self).__init__(x,y,xv,yv,owner)
     def interaction(self,other):
         delta_v=array([0.0,0.0])
-        separation=other.position-self.position        
-        delta_v+=separation*self.owner.eagle_hunt_strength
+        delta_v+=self.separation(other)*self.owner.eagle_hunt_strength
         
         return delta_v
 
+    def colour(self):
+        return (1,0,0)
 class Starling(Boid):
     def __init__(self,x,y,xv,yv,owner):
-        super(Eagle, self).__init__(x,y,xv,yv,owner)
+        super(Starling, self).__init__(x,y,xv,yv,owner)
     def interaction(self,other):
         delta_v=array([0.0,0.0])
-        separation=other.position-self.position
-        separation_sq=separation.dot(separation)
- 
-        if other.species=="Eagle":
+        separation=other.position-self.position 
+        if type(other)=="Eagle":
             # Flee the Eagle
-            if separation_sq < self.owner.eagle_avoidance_radius**2:
+            if self.separation_sq(other) < self.owner.eagle_avoidance_radius**2:
                 delta_v-=(separation*self.owner.eagle_fear)/separation.dot(separation)
                 return delta_v
 
@@ -44,14 +51,17 @@ class Starling(Boid):
             delta_v+=separation*self.owner.flock_attraction
             
             # Fly away from nearby boids
-            if separation_sq < self.owner.avoidance_radius**2:
+            if self.separation_sq(other) < self.owner.avoidance_radius**2:
                 delta_v-=separation
 
             # Try to match speed with nearby boids
-            if separation_sq < self.owner.formation_flying_radius**2:
+            if self.separation_sq(other) < self.owner.formation_flying_radius**2:
                 delta_v+=(other.velocity-self.velocity)*self.owner.speed_matching_strength
 
         return delta_v
+
+    def colour(self):
+        return (0,0,1)
 
 # Deliberately terrible code for teaching purposes
 class Boids(object):
@@ -69,17 +79,16 @@ class Boids(object):
 
 
     def initialise_random(self,count):
-        self.boids=[Boid(random.uniform(-450,50.0),
+        self.boids=[Starling(random.uniform(-450,50.0),
                 random.uniform(300.0,600.0),
                 random.uniform(0,10.0),
                 random.uniform(-20.0,20.0),self) for i in range(count)]
 
     def add_eagle(self,x,y,xv,yv):
-        self.boids.append(Eagle().(x,y,xv,yv,self))
+        self.boids.append(Eagle(x,y,xv,yv,self))
 
     def initialise_from_data(self,data):
-        self.boids=[Boid(x,y,xv,yv,self) for x,y,xv,yv in zip(*data)]
-
+        self.boids=[Starling(x,y,xv,yv,self) for x,y,xv,yv in zip(*data)]
     def update(self):
         for me in self.boids:
             delta_v=array([0.0,0.0])
