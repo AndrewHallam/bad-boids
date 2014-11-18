@@ -62,22 +62,10 @@ class Starling(Boid):
 
     def colour(self):
         return (0,0,1)
-
+        
 # Deliberately terrible code for teaching purposes
 class Boids(object):
-    def __init__(self,
-           flock_attraction,avoidance_radius,
-            formation_flying_radius,speed_matching_strength,
-            eagle_avoidance_radius=100, eagle_fear=5000, eagle_hunt_strength=0.00005):
-        self.flock_attraction=flock_attraction
-        self.avoidance_radius=avoidance_radius
-        self.formation_flying_radius=formation_flying_radius
-        self.speed_matching_strength=speed_matching_strength
-        self.eagle_avoidance_radius=eagle_avoidance_radius
-        self.eagle_fear=eagle_fear
-        self.eagle_hunt_strength=eagle_hunt_strength
-
-
+    
     def initialise_random(self,count):
         self.boids=[Starling(random.uniform(-450,50.0),
                 random.uniform(300.0,600.0),
@@ -98,3 +86,30 @@ class Boids(object):
             me.velocity+=delta_v
             # Move according to velocities
             me.position+=me.velocity
+
+class BoidsBuilder(object):
+    def start_boids(self):
+        self.boids = Boids()
+        
+    def set_starling_properties(self, flock_attraction, avoidance_radius, 
+    formation_flying_radius, speed_matching_strength):
+        self.boids.flock_attraction=flock_attraction
+        self.boids.avoidance_radius=avoidance_radius
+        self.boids.formation_flying_radius=formation_flying_radius
+        self.boids.speed_matching_strength=speed_matching_strength
+            
+    def set_eagle_properties(self, eagle_avoidance_radius, 
+    eagle_fear, eagle_hunt_strength):
+        self.boids.eagle_avoidance_radius = eagle_avoidance_radius
+        self.boids.eagle_fear=eagle_fear
+        self.boids.eagle_hunt_strength=eagle_hunt_strength
+        
+    def finish(self):
+        return self.boids
+
+        
+class BoidsBuilderRandom(BoidsBuilder):
+    def initialise():
+        pass
+        
+        
