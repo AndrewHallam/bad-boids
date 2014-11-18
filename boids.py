@@ -26,6 +26,7 @@ class Boid(object):
 class Eagle(Boid):
     def __init__(self,x,y,xv,yv,owner):
         super(Eagle, self).__init__(x,y,xv,yv,owner)
+        
     def interaction(self,other):
         delta_v=array([0.0,0.0])
         delta_v+=self.separation(other)*self.owner.eagle_hunt_strength
@@ -34,9 +35,11 @@ class Eagle(Boid):
 
     def colour(self):
         return (1,0,0)
+        
 class Starling(Boid):
     def __init__(self,x,y,xv,yv,owner):
         super(Starling, self).__init__(x,y,xv,yv,owner)
+        
     def interaction(self,other):
         delta_v=array([0.0,0.0])
         separation=other.position-self.position 
@@ -64,19 +67,17 @@ class Starling(Boid):
         return (0,0,1)
         
 # Deliberately terrible code for teaching purposes
-class Boids(object):
-    
-    def initialise_random(self,count):
-        self.boids=[Starling(random.uniform(-450,50.0),
-                random.uniform(300.0,600.0),
-                random.uniform(0,10.0),
-                random.uniform(-20.0,20.0),self) for i in range(count)]
+class BoidsModel(object):
+#    def initialise_random(self,count):
+#        self.boids=[Starling(random.uniform(-450,50.0),
+#                random.uniform(300.0,600.0),
+#                random.uniform(0,10.0),
+#                random.uniform(-20.0,20.0),self) for i in range(count)]
+#
+#
+#    def add_eagle(self,x,y,xv,yv):
+#        self.boids.append(Eagle(x,y,xv,yv,self))
 
-    def add_eagle(self,x,y,xv,yv):
-        self.boids.append(Eagle(x,y,xv,yv,self))
-
-    def initialise_from_data(self,data):
-        self.boids=[Starling(x,y,xv,yv,self) for x,y,xv,yv in zip(*data)]
     def update(self):
         for me in self.boids:
             delta_v=array([0.0,0.0])
@@ -89,27 +90,38 @@ class Boids(object):
 
 class BoidsBuilder(object):
     def start_boids(self):
-        self.boids = Boids()
+        self.boidsmodel = BoidsModel()
         
     def set_starling_properties(self, flock_attraction, avoidance_radius, 
     formation_flying_radius, speed_matching_strength):
-        self.boids.flock_attraction=flock_attraction
-        self.boids.avoidance_radius=avoidance_radius
-        self.boids.formation_flying_radius=formation_flying_radius
-        self.boids.speed_matching_strength=speed_matching_strength
+        self.boidsmodel.flock_attraction=flock_attraction
+        self.boidsmodel.avoidance_radius=avoidance_radius
+        self.boidsmodel.formation_flying_radius=formation_flying_radius
+        self.boidsmodel.speed_matching_strength=speed_matching_strength
             
     def set_eagle_properties(self, eagle_avoidance_radius, 
     eagle_fear, eagle_hunt_strength):
-        self.boids.eagle_avoidance_radius = eagle_avoidance_radius
-        self.boids.eagle_fear=eagle_fear
-        self.boids.eagle_hunt_strength=eagle_hunt_strength
+        self.boidsmodel.eagle_avoidance_radius = eagle_avoidance_radius
+        self.boidsmodel.eagle_fear=eagle_fear
+        self.boidsmodel.eagle_hunt_strength=eagle_hunt_strength
         
     def finish(self):
-        return self.boids
+        return self.boidsmodel
 
         
 class BoidsBuilderRandom(BoidsBuilder):
-    def initialise():
-        pass
-        
+    def initialise(self,count):
+        self.boidsmodel.boids = [Starling(random.uniform(-450,50.0),
+                random.uniform(300.0,600.0),
+                random.uniform(0,10.0),
+                random.uniform(-20.0,20.0), self.boidsmodel) for i in range(count)]
+    def add_eagle(self,x,y,xv,yv):
+        self.boidsmodel.boids.append(Eagle(x,y,xv,yv,self.boidsmodel))
+
+
+                
+class BoidsBuilderData(BoidsBuilder):
+    def initialise(self,data):
+        self.boidsmodel.boids=[Starling(x,y,xv,yv,self.boidsmodel) for x,y,xv,yv in zip(*data)]
+
         
