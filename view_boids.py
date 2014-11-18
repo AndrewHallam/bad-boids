@@ -1,13 +1,18 @@
-from boids import Boids
+from boids import Boids, BoidsBuilder
 from matplotlib import pyplot as plt
 from matplotlib import animation
 
-boids=Boids(
-        flock_attraction=0.01/50,
-        avoidance_radius=10,
-        formation_flying_radius=100,
-        speed_matching_strength=0.125/50
-    )
+builder=BoidsBuilder()
+builder.start_boids()
+builder.set_starling_properties(0.01/50, 10, 100, 0.125/50)
+builder.set_eagle_properties(100, 5000, 0.00005)
+boids=builder.finish()
+#boids=Boids(
+#        flock_attraction=0.01/50,
+#        avoidance_radius=10,
+#        formation_flying_radius=100,
+#        speed_matching_strength=0.125/50
+#    )
 
 
 boids.initialise_random(50)
