@@ -50,5 +50,3 @@ def test_boid_interaction_formation():
     first=bd.Starling(0,0,0.0,0,boids)
     second=bd.Starling(0,5,11.0,0,boids)
     assert_array_equal(first.interaction(second),[11.0*7.0,15.0])
-
-test_boid_interaction_fly_to_middle()
