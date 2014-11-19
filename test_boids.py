@@ -1,4 +1,4 @@
-from boids import BoidsBuilder 
+from boids import BoidsBuilder, BoidsBuilderRandom, BoidsBuilderData 
 import boids as bd
 from nose.tools import assert_almost_equal, assert_greater
 from nose.tools import assert_less, assert_equal, assert_sequence_equal
@@ -7,13 +7,13 @@ import os
 import yaml
 
 def test_bad_boids_regression():
-    builder=BoidsBuilder()
+    regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'fixture.yml')))
+    builder=BoidsBuilderData()
     builder.start_boids()
     builder.set_starling_properties(0.01/50, 10, 100, 0.125/50)
-    builder.set_eagle_properties(100, 5000, 0.00005)
+    builder.set_eagle_properties(100, 5000, 0.00005)    
+    builder.initialise(regression_data["before"])
     boids=builder.finish()    
-    regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'fixture.yml')))
-    boids.initialise_from_data(regression_data["before"])
     boids.update()
     for index,boid in enumerate(boids.boids):
         assert_almost_equal(boid.position[0],regression_data["after"][0][index],delta=0.01)
@@ -23,12 +23,12 @@ def test_bad_boids_regression():
 
 	
 def test_bad_boids_initialisation():
-    builder=BoidsBuilder()
+    builder=BoidsBuilderRandom()
     builder.start_boids()
     builder.set_starling_properties(1.0,10.0,100.0,0.5)
     builder.set_eagle_properties(100, 5000, 0.00005)
+    builder.initialise(15)
     boids=builder.finish()    
-    boids.initialise_random(15)
     assert_equal(len(boids.boids),15)
     for boid in boids.boids:
         assert_less(boid.position[0],50.0)
