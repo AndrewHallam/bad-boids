@@ -1,7 +1,7 @@
 from boids import BoidsBuilder, BoidsBuilderRandom, BoidsBuilderData 
 import boids as bd
 from nose.tools import assert_almost_equal, assert_greater
-from nose.tools import assert_less, assert_equal, assert_sequence_equal
+from nose.tools import assert_less, assert_equal
 from numpy.testing import assert_array_equal
 import os
 import yaml

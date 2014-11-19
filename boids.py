@@ -6,8 +6,6 @@ for use as an exercise on refactoring.
 import random
 from numpy import array
 
-# Will now add an Eagle to Boids
-
 class Boid(object):
     def __init__(self,x,y,xv,yv,owner):
         self.position=array([x,y])
@@ -68,16 +66,6 @@ class Starling(Boid):
         
 # Deliberately terrible code for teaching purposes
 class BoidsModel(object):
-#    def initialise_random(self,count):
-#        self.boids=[Starling(random.uniform(-450,50.0),
-#                random.uniform(300.0,600.0),
-#                random.uniform(0,10.0),
-#                random.uniform(-20.0,20.0),self) for i in range(count)]
-#
-#
-#    def add_eagle(self,x,y,xv,yv):
-#        self.boids.append(Eagle(x,y,xv,yv,self))
-
     def update(self):
         for me in self.boids:
             delta_v=array([0.0,0.0])
